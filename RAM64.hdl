@@ -1,0 +1,21 @@
+// This is the HDL code for the RAM64 component
+CHIP RAM64 {
+    IN in[16], sel[3], registerAddress[3], load;
+    OUT out[16];
+
+    PARTS:
+    DMux8Way(in=load, sel=sel, a=sOne, b=sTwo, c=sThree, d=sFour, e=sFive, f=sSix, g=sSeven, h=sEight);
+    
+    // 8 instances of Ram8
+    Ram8(in=in, load=sOne, sel=registerAddress, out=outOne);
+    Ram8(in=in, load=sTwo, sel=registerAddress, out=outTwo);
+    Ram8(in=in, load=sThree, sel=registerAddress, out=outThree);
+    Ram8(in=in, load=sFour, sel=registerAddress, out=outFour);
+    Ram8(in=in, load=sFive, sel=registerAddress, out=outFive);
+    Ram8(in=in, load=sSix, sel=registerAddress, out=outSix);
+    Ram8(in=in, load=sSeven, sel=registerAddress, out=outSeven);
+    Ram8(in=in, load=sEight, sel=registerAddress, out=outEight);
+    
+    // Mux to select the output
+    Mux8Way16(a=outOne, b=outTwo, c=outThree, d=outFour, e=outFive, f=outSix, g=outSeven, h=outEight, sel=sel, out=out);
+}
